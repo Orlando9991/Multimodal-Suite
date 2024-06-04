@@ -14,3 +14,5 @@ Step 1. Add the JitPack repository to your build file
 	        implementation 'com.github.Orlando9991:Multimodal-Suite:1.0.0'
 	}
 
+Requirements
+- Java 17 and Sdk 34
