@@ -1,4 +1,4 @@
-package com.rew.multimodal_suite;
+package com.rew.demo;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +14,12 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.rew.multimodal_suite.AccelerometerEventHandler;
+import com.rew.multimodal_suite.R;
+import com.rew.multimodal_suite.SpeechRecognitionGenerator;
+import com.rew.multimodal_suite.TextToSpeechGenerator;
+import com.rew.multimodal_suite.WritingRecognition;
 
 import java.io.IOException;
 import java.util.Locale;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:drawable/picture_frame"
-    tools:context=".MainActivity">
+    tools:context="com.rew.demo.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"

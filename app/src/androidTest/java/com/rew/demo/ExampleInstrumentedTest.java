@@ -1,4 +1,4 @@
-package com.rew.multimodal_suite;
+package com.rew.demo;
 
 import android.content.Context;
 
