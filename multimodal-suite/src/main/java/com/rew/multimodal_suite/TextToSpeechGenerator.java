@@ -13,7 +13,8 @@ public class TextToSpeechGenerator {
     private final TextToSpeech textToSpeech;
 
     public TextToSpeechGenerator(AppCompatActivity activity) {
-        textToSpeech = setUpTextToSpeech(activity, new Locale("pt", "POR"));
+        textToSpeech = setUpTextToSpeech(activity, new Locale("pt", "pt"));
+
     }
 
     public TextToSpeechGenerator(AppCompatActivity activity, Locale locale) {
