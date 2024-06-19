@@ -16,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.rew.multimodal_suite.AccelerometerEventHandler;
-import com.rew.multimodal_suite.R;
 import com.rew.multimodal_suite.SpeechRecognitionGenerator;
 import com.rew.multimodal_suite.TextToSpeechGenerator;
 import com.rew.multimodal_suite.WritingRecognition;
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //SR
-        speechRecognitionGenerator = new SpeechRecognitionGenerator(this, this::getSRdata,this::srEndSpeechListener);
+        speechRecognitionGenerator = new SpeechRecognitionGenerator(this, this::getSRdata,(s)->{},this::srEndSpeechListener);
         srResult = findViewById(R.id.srResult);
         Button srSpeak = findViewById(R.id.srSpeak);
         srSpeak.setOnClickListener((v)-> {

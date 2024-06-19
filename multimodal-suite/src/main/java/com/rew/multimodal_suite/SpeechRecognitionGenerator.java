@@ -18,23 +18,39 @@ public class SpeechRecognitionGenerator {
     private final Intent speechRecognizerIntent;
     private SpeechRecognizer speechRecognizer;
 
-    public SpeechRecognitionGenerator(AppCompatActivity activity, Intent intent, Consumer<String> consumer, Runnable runnable) {
-        init(activity, consumer, runnable);
+    public SpeechRecognitionGenerator(
+            AppCompatActivity activity,
+            Intent intent,
+            Consumer<String> finalStringConsumer,
+            Consumer<String> partialStringConsumer,
+            Runnable onEndOfSpeech
+    ) {
+        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech);
         speechRecognizerIntent = intent;
     }
 
-    public SpeechRecognitionGenerator(AppCompatActivity activity, Consumer<String> consumer, Runnable runnable) {
-        init(activity, consumer, runnable);
+    public SpeechRecognitionGenerator(
+            AppCompatActivity activity,
+            Consumer<String> finalStringConsumer,
+            Consumer<String> partialStringConsumer,
+            Runnable onEndOfSpeech) {
+        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech);
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
     }
 
-    private void init(AppCompatActivity activity, Consumer<String> consumer, Runnable runnable){
+    private void init(
+            AppCompatActivity activity,
+            Consumer<String> finalStringConsumer,
+            Consumer<String> partialStringConsumer,
+            Runnable onEndOfSpeech
+    ){
         //Get permissions
         getPermissions(activity);
 
         //init speechRecognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity.getApplicationContext());
-        speechRecognizer.setRecognitionListener(recognitionListenerSetUp(consumer, runnable));
+        speechRecognizer.setRecognitionListener(recognitionListenerSetUp(finalStringConsumer, partialStringConsumer, onEndOfSpeech));
     }
 
     public void getPermissions(AppCompatActivity activity){
@@ -54,7 +70,11 @@ public class SpeechRecognitionGenerator {
     }
 
 
-    public RecognitionListener recognitionListenerSetUp(Consumer<String> stringConsumer, Runnable runnable){
+    public RecognitionListener recognitionListenerSetUp(
+            Consumer<String> finalStringConsumer,
+            Consumer<String> partialStringConsumer,
+            Runnable onEndOfSpeech
+    ){
         return new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
@@ -79,7 +99,7 @@ public class SpeechRecognitionGenerator {
             @Override
             public void onEndOfSpeech() {
                 //resetData
-                runnable.run();
+                onEndOfSpeech.run();
             }
 
             @Override
@@ -90,12 +110,13 @@ public class SpeechRecognitionGenerator {
             @Override
             public void onResults(Bundle results) {
                 ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                stringConsumer.accept(data.get(0));
+                finalStringConsumer.accept(data.get(0));
             }
 
             @Override
             public void onPartialResults(Bundle partialResults) {
-                //Log.d("", "onPartialResults");
+                ArrayList<String> data = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                partialStringConsumer.accept(data.get(0));
             }
 
             @Override
