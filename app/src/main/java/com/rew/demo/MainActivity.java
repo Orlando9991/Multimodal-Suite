@@ -25,7 +25,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-
     //Accelerometer
     private TextView accelerometerXData;
     private TextView accelerometerYData;
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private WritingRecognition writingRecognition;
     private TextView ocrResult;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         accelerometerXData = findViewById(R.id.accelerometerX);
         accelerometerYData = findViewById(R.id.accelerometerY);
         accelerometerZData = findViewById(R.id.accelerometerZ);
-
 
         //TTS
         textToSpeechGenerator = new TextToSpeechGenerator(this);
