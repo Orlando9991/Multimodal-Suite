@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //SR
-        speechRecognitionGenerator = new SpeechRecognitionGenerator(this, this::getSRdata,(s)->{},this::srEndSpeechListener);
+        speechRecognitionGenerator = new SpeechRecognitionGenerator(this, this::getSRdata,(s)->{},this::srEndSpeechListener,()->{});
         srResult = findViewById(R.id.srResult);
         Button srSpeak = findViewById(R.id.srSpeak);
         srSpeak.setOnClickListener((v)-> {

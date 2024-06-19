@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,9 +24,10 @@ public class SpeechRecognitionGenerator {
             Intent intent,
             Consumer<String> finalStringConsumer,
             Consumer<String> partialStringConsumer,
-            Runnable onEndOfSpeech
+            Runnable onEndOfSpeech,
+            Runnable onError
     ) {
-        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech);
+        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech, onError);
         speechRecognizerIntent = intent;
     }
 
@@ -33,8 +35,9 @@ public class SpeechRecognitionGenerator {
             AppCompatActivity activity,
             Consumer<String> finalStringConsumer,
             Consumer<String> partialStringConsumer,
-            Runnable onEndOfSpeech) {
-        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech);
+            Runnable onEndOfSpeech,
+            Runnable onError) {
+        init(activity, finalStringConsumer, partialStringConsumer, onEndOfSpeech, onError);
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
     }
@@ -43,14 +46,15 @@ public class SpeechRecognitionGenerator {
             AppCompatActivity activity,
             Consumer<String> finalStringConsumer,
             Consumer<String> partialStringConsumer,
-            Runnable onEndOfSpeech
+            Runnable onEndOfSpeech,
+            Runnable onError
     ){
         //Get permissions
         getPermissions(activity);
 
         //init speechRecognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity.getApplicationContext());
-        speechRecognizer.setRecognitionListener(recognitionListenerSetUp(finalStringConsumer, partialStringConsumer, onEndOfSpeech));
+        speechRecognizer.setRecognitionListener(recognitionListenerSetUp(finalStringConsumer, partialStringConsumer, onEndOfSpeech, onError));
     }
 
     public void getPermissions(AppCompatActivity activity){
@@ -73,7 +77,8 @@ public class SpeechRecognitionGenerator {
     public RecognitionListener recognitionListenerSetUp(
             Consumer<String> finalStringConsumer,
             Consumer<String> partialStringConsumer,
-            Runnable onEndOfSpeech
+            Runnable onEndOfSpeech,
+            Runnable onError
     ){
         return new RecognitionListener() {
             @Override
@@ -105,6 +110,7 @@ public class SpeechRecognitionGenerator {
             @Override
             public void onError(int error) {
                 //Log.d("", "onError");
+                onError.run();
             }
 
             @Override
